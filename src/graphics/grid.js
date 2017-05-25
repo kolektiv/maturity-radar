@@ -1,5 +1,5 @@
-import { range } from 'd3-array';
-import { diameter } from '../calculations';
+import { diameter, position } from '../calculations';
+import { min, max } from '../prelude';
 
 // Axial
 
@@ -11,24 +11,39 @@ const axial = (axes, base, dimensions, scales) => {
     // Axial lines radiating from the radar centre point, scaled for the common
     // d3 scale in use.
 
-    const lines = (axes, common, dimensions, scale) => {
+    const lines = (common, scale) => {
         return common
             .append('line')
             .attr('x1', 0)
             .attr('y1', 0)
-            .attr('x2', (_, i) => scale(axes.range.max) * Math.cos(axes.arc * i - Math.PI / 2))
-            .attr('y2', (_, i) => scale(axes.range.max) * Math.sin(axes.arc * i - Math.PI / 2))
+            .attr('x2', (_, i) => position(axes, i, scale(max(axes.range))).x())
+            .attr('y2', (_, i) => position(axes, i, scale(max(axes.range))).y())
             .attr('class', 'line')
             .style('stroke', '#fff')
             .style('stroke-width', '1px');
     };
 
+    // Axial labels, giving the name of the maturity axis at the end of each axial
+    // line.
+
+    const labels = (common, scale) => {
+        common
+            .append('text')
+            .attr('text-anchor', 'middle')
+            .attr('x', (d, i) => position(axes, i, scale(max(axes.range)) * 1.25).x())
+            .attr('y', (d, i) => position(axes, i, scale(max(axes.range)) * 1.25).y())
+            .style('fill', '#999')
+            .style('font-family', 'sans-serif')
+            .style('font-size', "11px")
+            .text((d) => d.name);
+    };
+
     // Common base d3 elements generated from the array of names for each maturity
     // axis, to which the axial lines and labels are applied.
 
-    const common = (axes, base) => {
+    const common = () => {
         return base
-            .selectAll('.axial-lines')
+            .selectAll('.axial')
             .data(axes.names)
             .enter()
             .append('g');
@@ -36,10 +51,11 @@ const axial = (axes, base, dimensions, scales) => {
 
     // Common base d3 elements (instance).
 
-    const common_ = common(axes, base);
+    const common_ = common();
 
     return {
-        lines: lines(axes, common_, dimensions, scales.scale)
+        lines: lines(common_, scales.scale),
+        labels: labels(common_, scales.scale)
     };
 };
 
@@ -47,11 +63,11 @@ const axial = (axes, base, dimensions, scales) => {
 
 const radial = (axes, base, dimensions) => {
 
-    const circles = (axes, base, dimensions) => {
-        return base
-            .selectAll('.radials')
-            .data(range(axes.range.min, axes.range.max).reverse())
-            .enter()
+    // Radial circles forming the basic radar, and defined with partial opacity
+    // to provide a gradient visualisation.
+
+    const circles = (common) => {
+        return common
             .append('circle')
             .attr('r', (_, i) => diameter(i, dimensions.radius, axes.range))
             .style('fill', '#ccc')
@@ -59,11 +75,11 @@ const radial = (axes, base, dimensions) => {
             .style('stroke', '#fff');
     };
 
-    const labels = (axes, base, dimensions) => {
-        return base
-            .selectAll('.radial-labels')
-            .data(range(axes.range.min, axes.range.max).reverse())
-            .enter()
+    // Labels for individual values, represented by each concentric circle, and
+    // shown against the north vertical axis.
+
+    const labels = (common) => {
+        return common
             .append('text')
             .attr('x', 5)
             .attr('y', (_, i) => -1 * diameter(i, dimensions.radius, axes.range))
@@ -74,9 +90,24 @@ const radial = (axes, base, dimensions) => {
             .text((d) => d);
     };
 
+    // Common base d3 elements generated from the basic range of values calculated
+    // from the maturity axes.
+
+    const common = () => {
+        return base
+            .selectAll('.radial')
+            .data(axes.range)
+            .enter()
+            .append('g');
+    };
+
+    // Common base d3 elements (instance);
+
+    const common_ = common();
+
     return {
-        circles: circles(axes, base, dimensions),
-        labels: labels(axes, base, dimensions)
+        circles: circles(common_),
+        labels: labels(common_)
     };
 };
 

@@ -4,7 +4,7 @@ import { min, max } from './prelude';
 
 // Axial
 
-export const axes = ({ metrics }) => {
+export const axes = (metrics) => {
     return {
         arc: Math.PI * 2 / metrics.length,
         count: metrics.length,
@@ -27,7 +27,7 @@ export const position = (arc, index, value) => {
 
 // Dimensional
 
-export const dimensions = ({ size }) => {
+export const dimensions = (size) => {
     return {
         radius: size / 3,
         size

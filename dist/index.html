@@ -14,22 +14,10 @@
           {
             name: 'Data',
             range: [
-              {
-                value: 0,
-                description: 'Shared schema shared by multiple services, canonical data model'
-              },
-              {
-                value: 1,
-                description: 'Schema per service, plus some central data stores'
-              },
-              {
-                value: 2,
-                description: 'Schema per service, data fully distributed'
-              },
-              {
-                value: 3,
-                description: 'Multiple schemas per service (multiple representations if required), fully distributed'
-              }
+              'Shared schema shared by multiple services, canonical data model',
+              'Schema per service, plus some central data stores',
+              'Schema per service, data fully distributed',
+              'Multiple schemas per service (multiple representations if required), fully distributed'
             ],
             target: 2,
             actual: 1
@@ -37,22 +25,10 @@
           {
             name: 'Modularity',
             range: [
-              {
-                value: 0,
-                description: 'Distributed monolith, sharing models and logic across service boundaries (decomposition by function)'
-              },
-              {
-                value: 1,
-                description: 'Independent modules which can consume other services'
-              },
-              {
-                value: 2,
-                description: 'Independent modules with well defined contracts which may be consumed by other services'
-              },
-              {
-                value: 3,
-                description: 'Independent modules with replaceable and upgradable contracts which define replacement or alternatives'
-              }
+              'Distributed monolith, sharing models and logic across service boundaries (decomposition by function)',
+              'Independent modules which can consume other services',
+              'Independent modules with well defined contracts which may be consumed by other services',
+              'Independent modules with replaceable and upgradable contracts which define replacement or alternatives'
             ],
             target: 3,
             actual: 1
@@ -60,22 +36,10 @@
           {
             name: 'Scaling',
             range: [
-              {
-                value: 0,
-                description: 'Distributed monolith, sharing models and logic across service boundaries (decomposition by function)'
-              },
-              {
-                value: 1,
-                description: 'Independent modules which can consume other services'
-              },
-              {
-                value: 2,
-                description: 'Independent modules with well defined contracts which may be consumed by other services'
-              },
-              {
-                value: 3,
-                description: 'Independent modules with replaceable and upgradable contracts which define replacement or alternatives'
-              }
+              'Distributed monolith, sharing models and logic across service boundaries (decomposition by function)',
+              'Independent modules which can consume other services',
+              'Independent modules with well defined contracts which may be consumed by other services',
+              'Independent modules with replaceable and upgradable contracts which define replacement or alternatives'
             ],
             target: 2,
             actual: 2

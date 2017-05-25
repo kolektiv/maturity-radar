@@ -5,32 +5,23 @@ import { min, max } from './prelude';
 // Axial
 
 export const axes = ({ metrics }) => {
-    const global = metrics.map(m => {
-        const local = m.range.map(m => m.value);
-
-        return {
-            min: min(local),
-            max: max(local)
-        };
-    });
-
     return {
         arc: Math.PI * 2 / metrics.length,
         count: metrics.length,
-        names: metrics.map(m => {
+        range: range(0, max(metrics.map(m => m.range.length))).reverse(),
+        values: metrics.map(m => {
             return {
                 name: m.name,
-                description: m.description
+                range: m.range
             };
-        }),
-        range: range(min(global.map(v => v.min)), max(global.map(v => v.max)) + 1).reverse()
+        })
     };
 };
 
-export const position = (axes, index, value) => {
+export const position = (arc, index, value) => {
     return {
-        x: () => value * Math.cos(axes.arc * index - Math.PI / 2),
-        y: () => value * Math.sin(axes.arc * index - Math.PI / 2)
+        x: () => value * Math.cos(arc * index - Math.PI / 2),
+        y: () => value * Math.sin(arc * index - Math.PI / 2)
     };
 };
 
@@ -51,10 +42,10 @@ export const diameter = (index, radius, range) => {
 
 // Scalar
 
-export const scales = (axes, dimensions) => {
+export const scales = ({ range }, { radius }) => {
     return {
         scale: scaleLinear()
-            .range([0, dimensions.radius])
-            .domain([min(axes.range), max(axes.range)])
+            .range([0, radius])
+            .domain([0, max(range)])
     };
 };

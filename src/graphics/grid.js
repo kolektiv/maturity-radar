@@ -6,18 +6,18 @@ import { min, max } from '../prelude';
 // Axial lines and labels, giving a base to display the individual metrics
 // associated with each maturity axis.
 
-const axial = (axes, base, dimensions, scales) => {
+const axial = ({ arc, range, values }, base, scale) => {
 
     // Axial lines radiating from the radar centre point, scaled for the common
     // d3 scale in use.
 
-    const lines = (common, scale) => {
+    const lines = (common) => {
         return common
             .append('line')
             .attr('x1', 0)
             .attr('y1', 0)
-            .attr('x2', (_, i) => position(axes, i, scale(max(axes.range))).x())
-            .attr('y2', (_, i) => position(axes, i, scale(max(axes.range))).y())
+            .attr('x2', (_, i) => position(arc, i, scale(max(range))).x())
+            .attr('y2', (_, i) => position(arc, i, scale(max(range))).y())
             .attr('class', 'line')
             .style('stroke', '#fff')
             .style('stroke-width', '1px');
@@ -26,12 +26,12 @@ const axial = (axes, base, dimensions, scales) => {
     // Axial labels, giving the name of the maturity axis at the end of each axial
     // line.
 
-    const labels = (common, scale) => {
+    const labels = (common) => {
         common
             .append('text')
             .attr('text-anchor', 'middle')
-            .attr('x', (d, i) => position(axes, i, scale(max(axes.range)) * 1.25).x())
-            .attr('y', (d, i) => position(axes, i, scale(max(axes.range)) * 1.25).y())
+            .attr('x', (d, i) => position(arc, i, scale(max(range)) * 1.25).x())
+            .attr('y', (d, i) => position(arc, i, scale(max(range)) * 1.25).y())
             .style('fill', '#999')
             .style('font-family', 'sans-serif')
             .style('font-size', "11px")
@@ -44,7 +44,7 @@ const axial = (axes, base, dimensions, scales) => {
     const common = () => {
         return base
             .selectAll('.axial')
-            .data(axes.names)
+            .data(values)
             .enter()
             .append('g');
     };
@@ -54,14 +54,14 @@ const axial = (axes, base, dimensions, scales) => {
     const common_ = common();
 
     return {
-        lines: lines(common_, scales.scale),
-        labels: labels(common_, scales.scale)
+        lines: lines(common_),
+        labels: labels(common_)
     };
 };
 
 // Radial
 
-const radial = (axes, base, dimensions) => {
+const radial = ({ range }, base, { radius }) => {
 
     // Radial circles forming the basic radar, and defined with partial opacity
     // to provide a gradient visualisation.
@@ -69,7 +69,7 @@ const radial = (axes, base, dimensions) => {
     const circles = (common) => {
         return common
             .append('circle')
-            .attr('r', (_, i) => diameter(i, dimensions.radius, axes.range))
+            .attr('r', (_, i) => diameter(i, radius, range))
             .style('fill', '#ccc')
             .style('fill-opacity', 0.25)
             .style('stroke', '#fff');
@@ -82,7 +82,7 @@ const radial = (axes, base, dimensions) => {
         return common
             .append('text')
             .attr('x', 5)
-            .attr('y', (_, i) => -1 * diameter(i, dimensions.radius, axes.range))
+            .attr('y', (_, i) => -1 * diameter(i, radius, range))
             .attr('dy', "0.4em")
             .style('fill', '#999')
             .style('font-family', 'sans-serif')
@@ -96,7 +96,7 @@ const radial = (axes, base, dimensions) => {
     const common = () => {
         return base
             .selectAll('.radial')
-            .data(axes.range)
+            .data(range)
             .enter()
             .append('g');
     };
@@ -113,7 +113,7 @@ const radial = (axes, base, dimensions) => {
 
 // Grid
 
-export const grid = (axes, dimensions, graphics, scales) => {
+export const grid = (axes, dimensions, graphics, { scale }) => {
 
     const base = (graphics) => {
         return graphics
@@ -123,7 +123,7 @@ export const grid = (axes, dimensions, graphics, scales) => {
 
     const _base = base(graphics);
     const _radial = radial(axes, _base, dimensions);
-    const _axials = axial(axes, _base, dimensions, scales);
+    const _axials = axial(axes, _base, scale);
 
     return grid;
 };

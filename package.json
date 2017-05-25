@@ -1,0 +1,38 @@
+{
+  "name": "maturity-radar",
+  "version": "1.0.0",
+  "description": "A simple JS library for embedding a maturity radar, given axis definitions and target/actual values",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack-dev-server --open"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kolektiv/maturity-radar.git"
+  },
+  "keywords": [
+    "maturity",
+    "radar",
+    "d3"
+  ],
+  "author": "Andrew Cherry",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kolektiv/maturity-radar/issues"
+  },
+  "homepage": "https://github.com/kolektiv/maturity-radar#readme",
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.5.1",
+    "webpack": "^2.6.1",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "d3": "^4.9.1",
+    "d3-array": "^1.2.0",
+    "d3-scale": "^1.0.6",
+    "d3-selection": "^1.1.0"
+  }
+}

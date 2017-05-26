@@ -1,5 +1,7 @@
 # maturity-radar
 
+## Overview
+
 A simple JS library for embedding a maturity radar, given axis definitions and target/actual values. It allows you to embed a clear and intuitive maturity radar anywhere you can embed HTML and JavaScript. The display includes colourization based on maturity level (on a traffic light gradient) and hover functionality to provide tooltip access to metrics and maturity levels.
 
 The maturity radar in use looks like this (this is the demo file provided in the repo as `/dist/index.html`, which is also useful if you want to modify the code for your own use (NPM and WebPack is the short answer to the first question you'll ask).
@@ -44,3 +46,7 @@ radar.show('#demo', {
 ```
 
 Each metric requires a **name**, a **range** (a simple ordered array of maturity values, from 0 onwards), a **target** maturity level, and an **actual** maturity level. The library is quite adaptive. It should cope reasonably well with metrics with different cardinalities, maturity measures with different numbers of metrics.
+
+## Acknowledgements
+
+The maturity radar is a simplified and specialised version of the radar chart work done by Nadieh Bremer (https://bl.ocks.org/nbremer). It has been rebuilt to be less generic and more opinionated, focused solely on providing a simple and embeddable way to display maturity levels.

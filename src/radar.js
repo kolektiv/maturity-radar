@@ -1,37 +1,41 @@
-import { axes, dimensions, scales } from './calculations';
+import { range } from 'd3-array';
+import { scaleLinear } from 'd3-scale';
+import { max } from './prelude/maths';
 import { graphics } from './graphics/core';
-import { grid } from './graphics/grid';
-import { colour } from './graphics/colour';
-import { plot } from './graphics/plot';
+import { data } from './graphics/data';
+import { overlay } from './graphics/overlay';
+import { surface } from './graphics/surface';
+
+export const dimensions = (metrics, size) => {
+    const _radius = size / 3;
+    const _range = range(0, max(metrics.map(m => m.range.length))).reverse();
+
+    return {
+        arc: Math.PI * 2 / (_range.length + 1),
+        radius: _radius,
+        range: _range,
+        scale: scaleLinear()
+            .range([_radius / _range.length, _radius])
+            .domain([0, max(_range)]),
+        size
+    };
+};
 
 export const show = (id, { curve, metrics, size }) => {
 
-    // Calculations
+    // Dimensions
 
-    const _axes = axes(metrics);
-    const _dimensions = dimensions(size);
-    const _scales = scales(_axes, _dimensions);
+    const _dimensions = dimensions(metrics, size);
 
     // Graphics
 
     const _graphics = graphics(_dimensions, id);
-    const _grid = grid(_axes, _dimensions, _graphics, _scales);
 
-    const _colour = colour(metrics);
+    // Surface, Data, Overlay
 
-    const _target = plot(_axes, _dimensions, {
-        name: 'target',
-        colour: '#ccc',
-        curve,
-        opacity: 0.3,
-        values: metrics.map(m => m.target)
-    }, _graphics, _scales);
+    const _surface = surface(_dimensions, _graphics, metrics);
+    const _data = data(_dimensions, _graphics, metrics);
+    const _overlay = overlay(_dimensions, _graphics, metrics);
 
-    const _actual = plot(_axes, _dimensions, {
-        name: 'actual',
-        colour: _colour,
-        curve,
-        opacity: 0.5,
-        values: metrics.map(m => m.actual)
-    }, _graphics, _scales);
+    return _graphics;
 };

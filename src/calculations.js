@@ -45,7 +45,7 @@ export const diameter = (index, radius, range) => {
 export const scales = ({ range }, { radius }) => {
     return {
         scale: scaleLinear()
-            .range([0, radius])
+            .range([radius / range.length, radius])
             .domain([0, max(range)])
     };
 };

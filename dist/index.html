@@ -8,8 +8,8 @@
     <script src="radar.js"></script>
     <script>
       radar.show('#microservices', {
-        title: 'Microservices',
-        size: 800,
+        size: 700,
+        curve: false,
         metrics: [
           {
             name: 'Data',
@@ -19,7 +19,7 @@
               'Schema per service, data fully distributed',
               'Multiple schemas per service (multiple representations if required), fully distributed'
             ],
-            target: 2,
+            target: 3,
             actual: 1
           },
           {
@@ -30,8 +30,8 @@
               'Independent modules with well defined contracts which may be consumed by other services',
               'Independent modules with replaceable and upgradable contracts which define replacement or alternatives'
             ],
-            target: 3,
-            actual: 1
+            target: 2,
+            actual: 2
           },
           {
             name: 'Scaling',
@@ -42,7 +42,29 @@
               'Independent modules with replaceable and upgradable contracts which define replacement or alternatives'
             ],
             target: 2,
+            actual: 1
+          },
+          {
+            name: 'Monitoring',
+            range: [
+              'Distributed monolith, sharing models and logic across service boundaries (decomposition by function)',
+              'Independent modules which can consume other services',
+              'Independent modules with well defined contracts which may be consumed by other services',
+              'Independent modules with replaceable and upgradable contracts which define replacement or alternatives'
+            ],
+            target: 3,
             actual: 2
+          },
+          {
+            name: 'Discovery',
+            range: [
+              'Distributed monolith, sharing models and logic across service boundaries (decomposition by function)',
+              'Independent modules which can consume other services',
+              'Independent modules with well defined contracts which may be consumed by other services',
+              'Independent modules with replaceable and upgradable contracts which define replacement or alternatives'
+            ],
+            target: 3,
+            actual: 1
           }
         ]
       });

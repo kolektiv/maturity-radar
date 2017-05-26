@@ -6,7 +6,7 @@ import { min, max } from '../prelude';
 // Axial lines and labels, giving a base to display the individual metrics
 // associated with each maturity axis.
 
-const axial = ({ arc, range, values }, base, scale) => {
+const axial = ({ arc, range, values }, grid, scale) => {
 
     // Axial lines radiating from the radar centre point, scaled for the common
     // d3 scale in use.
@@ -42,7 +42,7 @@ const axial = ({ arc, range, values }, base, scale) => {
     // axis, to which the axial lines and labels are applied.
 
     const common = () => {
-        return base
+        return grid
             .selectAll('.axial')
             .data(values)
             .enter()
@@ -51,17 +51,17 @@ const axial = ({ arc, range, values }, base, scale) => {
 
     // Common base d3 elements (instance).
 
-    const common_ = common();
+    const _common = common();
 
     return {
-        lines: lines(common_),
-        labels: labels(common_)
+        lines: lines(_common),
+        labels: labels(_common)
     };
 };
 
 // Radial
 
-const radial = ({ range }, base, { radius }) => {
+const radial = ({ range }, grid, { radius }) => {
 
     // Radial circles forming the basic radar, and defined with partial opacity
     // to provide a gradient visualisation.
@@ -94,7 +94,7 @@ const radial = ({ range }, base, { radius }) => {
     // from the maturity axes.
 
     const common = () => {
-        return base
+        return grid
             .selectAll('.radial')
             .data(range)
             .enter()
@@ -103,11 +103,11 @@ const radial = ({ range }, base, { radius }) => {
 
     // Common base d3 elements (instance);
 
-    const common_ = common();
+    const _common = common();
 
     return {
-        circles: circles(common_),
-        labels: labels(common_)
+        circles: circles(_common),
+        labels: labels(_common)
     };
 };
 
@@ -115,15 +115,15 @@ const radial = ({ range }, base, { radius }) => {
 
 export const grid = (axes, dimensions, graphics, { scale }) => {
 
-    const base = (graphics) => {
+    const grid = (graphics) => {
         return graphics
             .append('g')
-            .attr('class', 'base');
+            .attr('class', 'grid');
     };
 
-    const _base = base(graphics);
-    const _radial = radial(axes, _base, dimensions);
-    const _axials = axial(axes, _base, scale);
+    const _grid = grid(graphics);
+    const _radial = radial(axes, _grid, dimensions);
+    const _axials = axial(axes, _grid, scale);
 
     return grid;
 };

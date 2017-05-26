@@ -49,4 +49,6 @@ Each metric requires a **name**, a **range** (a simple ordered array of maturity
 
 ## Acknowledgements
 
+maturity-radar contains a tree-shaken version of various d3 libraries (it is built using d3).
+
 The maturity radar is a simplified and specialised version of the radar chart work done by Nadieh Bremer (https://bl.ocks.org/nbremer). It has been rebuilt to be less generic and more opinionated, focused solely on providing a simple and embeddable way to display maturity levels.

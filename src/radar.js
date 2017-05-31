@@ -11,7 +11,7 @@ export const dimensions = (metrics, size) => {
     const _range = range(0, max(metrics.map(m => m.range.length))).reverse();
 
     return {
-        arc: Math.PI * 2 / (_range.length + 1),
+        arc: Math.PI * 2 / (metrics.length),
         radius: _radius,
         range: _range,
         scale: scaleLinear()
